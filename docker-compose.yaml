@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=tim
+      - POSTGRES_PASSWORD=tim
+      - POSTGRES_DB=todo_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./db_data/:/var/lib/postgres/data
