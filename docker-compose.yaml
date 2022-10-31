@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   postgres:
     image: postgres:alpine
@@ -10,4 +10,17 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - ./db_data/:/var/lib/postgres/data
+      - ./db_data/:/var/lib/postgresql/data
+
+#  api:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    restart: always
+#    env_file:
+#      - ./.env
+#    environment:
+#      POSTGRES_HOST: postgres
+#    depends_on:
+#      postgres:
+#        condition: service_healthy
