@@ -1,7 +1,8 @@
 #!/bin/bash
-python manage.py migrate --check
+python scr/manage.py makemigrations --check
 status=$?
 if [[ $status != 0 ]]; then
-python manage.py migrate
+  python scr/manage.py makemigrations
+  python scr/manage.py migrate
 fi
 exec "$@"

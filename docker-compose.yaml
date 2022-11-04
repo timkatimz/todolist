@@ -1,26 +1,57 @@
-version: '3.9'
+version: '3.8'
 services:
   postgres:
     image: postgres:alpine
     restart: always
     environment:
-      - POSTGRES_USER=tim
-      - POSTGRES_PASSWORD=tim
-      - POSTGRES_DB=todo_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - '5432:5432'
     volumes:
       - ./db_data/:/var/lib/postgresql/data
+    healthcheck:
+      test: [ 'CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_NAME}' ]
+      timeout: 5s
+      interval: 5s
+      retries: 3
 
-#  api:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    restart: always
-#    env_file:
-#      - ./.env
-#    environment:
-#      POSTGRES_HOST: postgres
-#    depends_on:
-#      postgres:
-#        condition: service_healthy
+
+  migrations:
+    build: .
+    environment:
+      DB_HOST: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate"
+
+  api:
+    build:
+      context: .
+    restart: always
+    environment:
+      DB_HOST: postgres
+    env_file:
+      - ./.env
+    ports:
+      - '8000:8000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    volumes:
+      - ./src:/opt/todolist
+
+  frontend:
+    image: sermalenk/skypro-front:lesson-34
+    restart: always
+    depends_on:
+      - postgres
+      - api
+    ports:
+      - '80:80'
