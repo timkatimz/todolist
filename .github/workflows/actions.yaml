@@ -2,8 +2,7 @@ name: Build
 description:
 on:
   push:
-    tags:
-      -'v*'
+
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -25,6 +24,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
