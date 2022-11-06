@@ -7,8 +7,6 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
-    ports:
-      - '5432:5432'
     volumes:
       - ./db_data/:/var/lib/postgresql/data
     healthcheck:
@@ -19,8 +17,7 @@ services:
 
 
   api:
-    build:
-      context: .
+    image: tsemeneev/diplom:latest
     restart: always
     environment:
       DB_HOST: postgres
@@ -29,10 +26,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      migrations:
-        condition: service_completed_successfully
-    volumes:
-      - ./src:/opt/todolist
 
   frontend:
     image: sermalenk/skypro-front:lesson-34
@@ -43,4 +36,4 @@ services:
     ports:
       - '80:80'
     volumes:
-      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
