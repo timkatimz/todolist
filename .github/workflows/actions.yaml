@@ -31,7 +31,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Decrypt ansible
-      - uses: anthonykgross/ansible-vault-cli-github-action@v1
+        uses: anthonykgross/ansible-vault-cli-github-action@v1
         with:
           vault_key: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
           command: "ansible-vault decrypt deploy/.env"

@@ -17,7 +17,7 @@ services:
 
 
   api:
-    image: tsemeneev/diplom:latest
+    image: ${DOCKERHUB_USERNAME}/diplom:latest
     restart: always
     environment:
       DB_HOST: postgres
