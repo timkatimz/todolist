@@ -37,3 +37,7 @@ services:
       - '80:80'
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./static/:/opt/static
+
+volumes:
+  pg_data:
