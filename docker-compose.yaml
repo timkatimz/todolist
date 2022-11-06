@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   postgres:
     image: postgres:alpine
@@ -10,24 +10,12 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - ./db_data/:/var/lib/postgresql/data
+      - ./pg_data/:/var/lib/postgresql/data
     healthcheck:
       test: [ 'CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_NAME}' ]
       timeout: 5s
       interval: 5s
       retries: 3
-
-
-  migrations:
-    build: .
-    environment:
-      DB_HOST: postgres
-    depends_on:
-      postgres:
-        condition: service_healthy
-    command: >
-      sh -c "python manage.py makemigrations &&
-             python manage.py migrate"
 
   api:
     build:
@@ -42,10 +30,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      migrations:
-        condition: service_completed_successfully
-    volumes:
-      - ./src:/opt/todolist
+
 
   frontend:
     image: sermalenk/skypro-front:lesson-34
@@ -55,3 +40,5 @@ services:
       - api
     ports:
       - '80:80'
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf
