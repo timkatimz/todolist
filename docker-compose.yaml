@@ -20,6 +20,7 @@ services:
   api:
     build:
       context: .
+      dockerfile: Dockerfile
     restart: always
     environment:
       DB_HOST: postgres
@@ -33,7 +34,7 @@ services:
 
 
   frontend:
-    image: sermalenk/skypro-front:lesson-34
+    image: sermalenk/skypro-front:lesson-35
     restart: always
     depends_on:
       - postgres
