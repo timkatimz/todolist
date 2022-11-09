@@ -87,7 +87,6 @@ class GoalCommentCreateView(CreateAPIView):
     serializer_class = GoalCommentCreateSerializer
 
 
-
 class GoalCommentListView(ListAPIView):
     model = GoalComment
     permission_classes = [permissions.IsAuthenticated]

@@ -33,7 +33,7 @@ class GoalCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Goal
-        filter = '__all__'
+        fields = '__all__'
         read_only_fields = ("id", "created", "updated", "user")
 
     def validated_category(self, value: Type[GoalCategory]):
@@ -47,10 +47,9 @@ class GoalSerializer(serializers.ModelSerializer):
         queryset=GoalCategory.objects.filter(is_deleted=False)
     )
 
-
     class Meta:
         model = Goal
-        filter = '__all__'
+        fields = '__all__'
         read_only_fields = ("id", "created", "updated", "user")
 
     def validated_category(self, value: Type[GoalCategory]):
@@ -64,7 +63,7 @@ class GoalCommentCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GoalComment
-        filter = '__all__'
+        fields = '__all__'
         read_only_fields = ("id", "created", "updated", "user")
 
 
@@ -73,5 +72,5 @@ class GoalCommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GoalComment
-        filter = '__all__'
+        fields = '__all__'
         read_only_fields = ("id", "created", "updated", "user", "goal")
