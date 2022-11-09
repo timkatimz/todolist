@@ -93,7 +93,7 @@ class GoalCommentListView(ListAPIView):
     serializer_class = GoalCommentSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ["goal"]
-    ordering = ["-create"]
+    ordering = ["-created"]
 
     def get_queryset(self):
         return GoalComment.objects.filter(user_id=self.request.user.id)
