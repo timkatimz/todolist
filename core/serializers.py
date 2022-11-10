@@ -43,7 +43,7 @@ class LoginSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'password']
+        fields = '__all__'
 
     def create(self, validated_data: dict):
         if not (user := authenticate(
