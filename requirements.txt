@@ -3,4 +3,5 @@ django-environ
 psycopg2-binary
 djangorestframework==3.14.0
 social-auth-app-django==5.0.0
+django-filter
 
