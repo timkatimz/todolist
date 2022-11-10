@@ -71,8 +71,8 @@ class Goal(BaseModel):
 
 
 class GoalComment(BaseModel):
-    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="commentы", verbose_name="Автор")
-    goal = models.ForeignKey(Goal, verbose_name="Цель", on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name="Автор", related_name="comments",)
+    goal = models.ForeignKey(Goal, on_delete=models.CASCADE,  verbose_name="Цель", related_name='comments')
     text = models.TextField(verbose_name="Текст")
 
     class Meta:

@@ -1,9 +1,11 @@
 from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
 from rest_framework import permissions, filters
 from rest_framework.pagination import LimitOffsetPagination
 
+from goals.filters import GoalDateFilter
 from goals.models import GoalCategory, Goal, GoalComment
 from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalCreateSerializer, \
     GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer
@@ -18,11 +20,7 @@ class GoalCategoryListView(ListAPIView):
     model = GoalCategory
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCategorySerializer
-    pagination_class = LimitOffsetPagination
-    filter_backends = [
-        filters.OrderingFilter,
-        filters.SearchFilter,
-    ]
+    filter_backends = [OrderingFilter, SearchFilter]
     ordering_fields = ["title", "created"]
     ordering = ["title"]
     search_fields = ["title"]
@@ -56,11 +54,8 @@ class GoalListView(ListAPIView):
     model = Goal
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalSerializer
-    pagination_class = LimitOffsetPagination
-    filter_backends = [
-        filters.OrderingFilter,
-        filters.SearchFilter,
-    ]
+    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
+    filterset_class = GoalDateFilter
     ordering_fields = ["title", "created"]
     ordering = ["title"]
     search_fields = ["title", "description"]
@@ -91,7 +86,7 @@ class GoalCommentListView(ListAPIView):
     model = GoalComment
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCommentSerializer
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filter_backends = [OrderingFilter]
     filterset_fields = ["goal"]
     ordering = ["-created"]
 
