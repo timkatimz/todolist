@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'environ',
     'core',
     'goals',
+    'bot',
 
 ]
 
