@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   postgres:
     image: postgres:alpine
@@ -28,7 +28,7 @@ services:
         condition: service_healthy
 
   frontend:
-    image: sermalenk/skypro-front:lesson-34
+    image: sermalenk/skypro-front:lesson-37
     restart: always
     depends_on:
       - postgres

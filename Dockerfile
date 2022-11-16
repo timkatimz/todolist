@@ -3,7 +3,8 @@ FROM python:3.10-slim
 WORKDIR /src
 
 RUN pip install --upgrade pip
-RUN pip install Django django-environ psycopg2-binary gunicorn
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
 COPY . .
 COPY entrypoint.sh ./entrypoint.sh
