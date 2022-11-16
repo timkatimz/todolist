@@ -34,7 +34,7 @@ services:
 
 
   frontend:
-    image: sermalenk/skypro-front:lesson-35
+    image: sermalenk/skypro-front:lesson-37
     restart: always
     depends_on:
       - postgres
