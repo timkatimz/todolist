@@ -87,7 +87,7 @@ class Goal(BaseModel):
         choices=Priority.choices,
         default=Priority.medium
     )
-    due_date = models.DateTimeField(verbose_name="Дата выполнеия", null=True, blank=True)
+    due_date = models.DateTimeField(verbose_name="Дата выполнения", null=True, blank=True)
     user = models.ForeignKey(User,
                              on_delete=models.PROTECT,
                              related_name="goals",

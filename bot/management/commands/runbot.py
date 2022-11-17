@@ -50,7 +50,9 @@ class Command(BaseCommand):
     def handle_goals_list(self, msg: Message, tg_user: TgUser):
         resp_goals: list[str] = [
             f'#{goal.id} {goal.title}'
-            for goal in Goal.objects.filter(user_id=tg_user.user_id).order_by('created')
+            for goal in Goal.objects.filter(user_id=tg_user.user_id,
+                                            status__in=(1, 2, 3)
+                                            ).order_by('created')
         ]
         if resp_goals:
             self.tg_client.send_message(msg.chat.id, '\n'.join(resp_goals))
@@ -61,8 +63,7 @@ class Command(BaseCommand):
         resp_categories: list[str] = [
             f'#{category.id} {category.title}'
             for category in GoalCategory.objects.filter(
-                board__participants__user_id=tg_user.user_id,
-                 is_deleted=False)
+                board__participants__user_id=tg_user.user_id, is_deleted=False)
         ]
         if resp_categories:
             self.tg_client.send_message(msg.chat.id, 'Select category\n' + '\n'.join(resp_categories))
@@ -73,10 +74,10 @@ class Command(BaseCommand):
         if msg.text.isdigit():
             category_id = int(msg.text)
             if GoalCategory.objects.filter(
-                board__participants__user_id=tg_user.user_id,
-                board__participants__role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
-                is_deleted=False,
-                id=category_id
+                    board__participants__user_id=tg_user.user_id,
+                    board__participants__role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
+                    is_deleted=False,
+                    id=category_id
             ).exists():
                 self.storage.update_data(chat_id=msg.chat.id, category_id=category_id)
                 self.tg_client.send_message(msg.chat.id, '[set title]')
