@@ -49,7 +49,7 @@ class Command(BaseCommand):
 
     def handle_goals_list(self, msg: Message, tg_user: TgUser):
         resp_goals: list[str] = [
-            f'#{goal.id} {goal.title}'
+            f'№{goal.id} {goal.title}'
             for goal in Goal.objects.filter(user_id=tg_user.user_id,
                                             status__in=(1, 2, 3)
                                             ).order_by('created')
