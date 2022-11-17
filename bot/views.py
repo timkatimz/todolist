@@ -15,7 +15,7 @@ class VerificationView(GenericAPIView):
     serializer_class = TgUserSerializer
 
     def patch(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer: TgUserSerializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         tg_user: TgUser = serializer.validated_data['tg_user']
         tg_user.user = self.request.user
@@ -23,5 +23,5 @@ class VerificationView(GenericAPIView):
 
         instance_serializer: TgUserSerializer = self.get_serializer(tg_user)
         TgClient(settings.BOT_TOKEN).send_message(tg_user.chat_id, '[verification_completed]')
-        return Response(instance_serializer)
+        return Response(instance_serializer.data)
 

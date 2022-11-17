@@ -32,6 +32,20 @@ services:
       postgres:
         condition: service_healthy
 
+  bot:
+    build:
+      context: .
+    restart: always
+    environment:
+      DB_HOST: postgres
+    env_file:
+      - ./.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      api:
+        condition: service_started
+    command: python manage.py runbot
 
   frontend:
     image: sermalenk/skypro-front:lesson-38
