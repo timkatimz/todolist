@@ -72,9 +72,6 @@ class UpdatePasswordSerializer(serializers.Serializer):
             raise ValidationError({'old_password': 'field is incorrect'})
         return attrs
 
-    def create(self, validated_data) -> User:
-        raise NotImplementedError
-
     def update(self, instance: User, validated_data: dict) -> User:
         instance.password = make_password(validated_data['new_password'])
         instance.save(update_fields=('password',))
