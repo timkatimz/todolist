@@ -2,6 +2,7 @@ import pytest
 
 
 @pytest.mark.django_db
+@pytest.mark.skip
 def test_update_password(client):
     user_data = {
         'username': 'tim',
