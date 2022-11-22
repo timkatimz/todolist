@@ -23,3 +23,13 @@ def create_login_user(client):
         content_type='application/json')
 
     return create_user_response, login_user_response
+
+
+@pytest.fixture
+def create_board(client):
+    create_board_response = client.post(
+        '/goals/board/create',
+        data={'title': 'test board'},
+        content_type='application/json')
+    return create_board_response
+
