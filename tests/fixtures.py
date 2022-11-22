@@ -26,10 +26,21 @@ def create_login_user(client):
 
 
 @pytest.fixture
-def create_board(client):
+def create_board(client, create_login_user):
     create_board_response = client.post(
         '/goals/board/create',
         data={'title': 'test board'},
         content_type='application/json')
     return create_board_response
+
+
+@pytest.fixture
+def create_category(client, create_board):
+    create_category = client.post('/goals/goal_category/create',
+                                  {'title': 'test category',
+                                   'board': create_board.data["id"]},
+                                  format='json')
+
+    return create_category
+
 

@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.django_db
-# @pytest.mark.skip
+@pytest.mark.skip
 def test_category_delete(client, create_login_user):
     board_create = client.post(
         '/goals/board/create',

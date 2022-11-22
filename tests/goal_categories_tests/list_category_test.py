@@ -27,7 +27,7 @@ def test_list_category(client, create_login_user):
             "user": create_login_user[0].data,
             "created": create_category_1.data['created'],
             "updated": create_category_1.data['updated'],
-            "title": create_category_1.data['title'],
+            "title": 'test category 1',
             "is_deleted": False,
             "board": board_create.data['id']
         },
@@ -36,7 +36,7 @@ def test_list_category(client, create_login_user):
             "user": create_login_user[0].data,
             "created": create_category_2.data['created'],
             "updated": create_category_2.data['updated'],
-            "title": create_category_2.data['title'],
+            "title": 'test category 2',
             "is_deleted": False,
             "board": board_create.data['id']
         }]
