@@ -3,6 +3,7 @@ import pytest
 
 @pytest.fixture
 def create_login_user(client):
+    """Create and login user fixture"""
     user_data = {
         'username': 'tim',
         'first_name': 'Tim',
@@ -27,6 +28,7 @@ def create_login_user(client):
 
 @pytest.fixture
 def create_board(client, create_login_user):
+    """Create a board fixture"""
     create_board_response = client.post(
         '/goals/board/create',
         data={'title': 'test board'},
@@ -36,11 +38,23 @@ def create_board(client, create_login_user):
 
 @pytest.fixture
 def create_category(client, create_board):
+    """Create a category fixture"""
     create_category = client.post('/goals/goal_category/create',
                                   {'title': 'test category',
                                    'board': create_board.data["id"]},
                                   format='json')
 
     return create_category
+
+
+@pytest.fixture
+def create_goal(client, create_category):
+    """Create a goal fixture"""
+    create_goal = client.post('/goals/goal/create',
+                              {'title': 'new goal', 'category': create_category.data['id']},
+                              content_type='application/json')
+    return create_goal
+
+
 
 
