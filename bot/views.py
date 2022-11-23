@@ -10,11 +10,13 @@ from todolist import settings
 
 
 class VerificationView(GenericAPIView):
+    """Ручка для указания кода верификации бота"""
     model = TgUser
     permission_classes = [IsAuthenticated]
     serializer_class = TgUserSerializer
 
     def patch(self, request, *args, **kwargs):
+        """Метод для редактирования поля verification_code пользователя"""
         serializer: TgUserSerializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         tg_user: TgUser = serializer.validated_data['tg_user']

@@ -17,20 +17,27 @@ logger = logging.getLogger(__name__)
 
 
 class StateEnum(Enum):
+    """Класс для выбора состояния:
+    - до выбора категории
+    - после выбора категории"""
     CREATE_CATEGORY_SELECT = auto()
     CHOSEN_CATEGORY = auto()
 
 
 class NewGoal(BaseModel):
+    """Класс модели для создания новой цели"""
     category_id: int | None = None
     goal_title: str | None = None
 
     @property
     def is_completed(self) -> bool:
+        """Метод проверяющий заполненность полей category_id и goal_title,
+        для создания новой цели"""
         return None not in [self.category_id, self.goal_title]
 
 
 class Command(BaseCommand):
+    """Базовый класс для запуска и управления ботом"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.tg_client = TgClient(settings.BOT_TOKEN)
@@ -38,9 +45,12 @@ class Command(BaseCommand):
 
     @staticmethod
     def _generate_verification_code() -> str:
+        """Защищенный метод для генерации кода верификации"""
         return os.urandom(12).hex()
 
     def handle_unverified_user(self, msg: Message, tg_user: TgUser):
+        """Ручка для работы с не идентифицированными пользователями: генерация кода верификации
+        и отправка его пользователю"""
         code: str = self._generate_verification_code()
         tg_user.verification_code = code
         tg_user.save(update_fields=('verification_code',))
@@ -48,6 +58,7 @@ class Command(BaseCommand):
             chat_id=msg.chat.id, text=f'[verification code] {tg_user.verification_code}')
 
     def handle_goals_list(self, msg: Message, tg_user: TgUser):
+        """Ручка для получения и вывода списка целей"""
         resp_goals: list[str] = [
             f'№{goal.id} {goal.title}'
             for goal in Goal.objects.filter(user_id=tg_user.user_id,
@@ -60,6 +71,7 @@ class Command(BaseCommand):
             self.tg_client.send_message(msg.chat.id, '[You have no goals]')
 
     def handle_goal_categories_list(self, msg: Message, tg_user: TgUser):
+        """Ручка для получения и вывода списка категорий целей"""
         resp_categories: list[str] = [
             f'#{category.id} {category.title}'
             for category in GoalCategory.objects.filter(
@@ -71,6 +83,7 @@ class Command(BaseCommand):
             self.tg_client.send_message(msg.chat.id, '[You have no categories]')
 
     def handle_save_selected_category(self, msg: Message, tg_user: TgUser):
+        """Ручка для выбора и валидации выбранной категорий для создания новой цели"""
         if msg.text.isdigit():
             category_id = int(msg.text)
             if GoalCategory.objects.filter(
@@ -88,6 +101,7 @@ class Command(BaseCommand):
             self.tg_client.send_message(msg.chat.id, '[Invalid category id]')
 
     def handle_save_new_category(self, msg: Message, tg_user: TgUser):
+        """Ручка для создания новой цели"""
         goal = NewGoal(**self.storage.get_data(tg_user.chat_id))
         goal.goal_title = msg.text
         if goal.is_completed:
@@ -103,6 +117,11 @@ class Command(BaseCommand):
         self.storage.reset(tg_user.chat_id)
 
     def handle_verified_user(self, msg: Message, tg_user: TgUser):
+        """Ручка для работы с верифицированным пользователем.
+        Принимает и обрабатывает следующие командыЖ
+        - /goals -> выводит список целей
+        - /create -> позволяет создавать новые цели
+        - /cancel -> позволяет отменить создание цели (только на этапе создания)"""
         if msg.text == '/goals':
             self.handle_goals_list(msg, tg_user)
         elif msg.text == '/create':
@@ -126,6 +145,9 @@ class Command(BaseCommand):
                     logger.warning('invalid state: %s', state)
 
     def handle_message(self, msg: Message):
+        """Ручка определяющая верифицирован пользователь или нет
+        верифицированных пользователей отправляет на ручку -> handle_verified_user
+        не верифицированных -> handle_unverified_user, для получения кода верификации"""
         tg_user, _ = TgUser.objects.select_related('user').get_or_create(
             chat_id=msg.chat.id,
             defaults={
@@ -138,6 +160,8 @@ class Command(BaseCommand):
             self.handle_unverified_user(msg=msg, tg_user=tg_user)
 
     def handle(self, *args, **options):
+        """Ручка проверяет обновления чата. При получении новых сообщений от пользователей
+        отправляет их на ручку -> handle_message"""
         offset = 0
         while True:
             res = self.tg_client.get_updates(offset=offset)
