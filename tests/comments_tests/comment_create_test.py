@@ -4,6 +4,7 @@ import pytest
 @pytest.mark.django_db
 @pytest.mark.skip
 def test_create_comment(client, create_goal):
+    """Тест на проверку создания комментария"""
     create_comment = client.post('/goals/goal_comment/create',
                                  {'text': 'new comment',
                                   'goal': create_goal.data['id']},

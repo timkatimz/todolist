@@ -4,6 +4,7 @@ import pytest
 @pytest.mark.django_db
 @pytest.mark.skip
 def test_update_password(client):
+    """Тест на проверку смены пароля пользователя"""
     user_data = {
         'username': 'tim',
         'first_name': 'Tim',

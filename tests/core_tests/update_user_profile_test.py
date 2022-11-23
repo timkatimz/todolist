@@ -6,6 +6,7 @@ from core.models import User
 @pytest.mark.django_db
 @pytest.mark.skip
 def test_update_user_profile(client):
+    """Тест на проверку редактирования пользователя"""
     user_data = {
         'username': 'tim',
         'first_name': 'Tim',

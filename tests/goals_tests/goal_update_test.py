@@ -4,6 +4,7 @@ import pytest
 @pytest.mark.django_db
 @pytest.mark.skip
 def test_update_goal(client, create_category):
+    """Тест на проверку редактирования цели"""
     create_goal = client.post('/goals/goal/create',
                               {'title': 'new goal', 'category': create_category.data['id']},
                               content_type='application/json')

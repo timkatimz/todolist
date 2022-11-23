@@ -4,6 +4,7 @@ import pytest
 @pytest.mark.django_db
 @pytest.mark.skip
 def test_boards_list(client, create_login_user):
+    """Тест на проверку отображения списка досок"""
 
     board_create_1 = client.post(
         '/goals/board/create',

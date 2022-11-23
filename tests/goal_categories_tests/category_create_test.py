@@ -4,6 +4,7 @@ import pytest
 @pytest.mark.django_db
 @pytest.mark.skip
 def test_category_create(client, create_login_user):
+    """Тест на проверку создания категории"""
     board_create = client.post(
         '/goals/board/create',
         {'title': 'test board'},
