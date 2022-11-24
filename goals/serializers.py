@@ -1,5 +1,3 @@
-from typing import Type
-
 from django.db import transaction
 from rest_framework import serializers, exceptions
 from rest_framework.exceptions import PermissionDenied
@@ -60,7 +58,8 @@ class BoardSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "created", "updated")
 
     def update(self, instance, validated_data):
-        """Метод для редактирования и добавления частников доски"""
+        """Метод для редактирования и добавления участников доски"""
+        print(validated_data)
         owner = validated_data.pop("user")
         new_participants = validated_data.pop("participants")
         new_by_id = {part["user"].id: part for part in new_participants}
@@ -209,5 +208,3 @@ class GoalCommentSerializer(serializers.ModelSerializer):
         model = GoalComment
         fields = '__all__'
         read_only_fields = ("id", "created", "updated", "user", "goal")
-
-
