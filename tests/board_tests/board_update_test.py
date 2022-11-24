@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.django_db
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_board_update(client, create_login_user, create_another_user):
     """Тест на редактирование информации о доске и добавлении участников"""
     board_create = client.post(

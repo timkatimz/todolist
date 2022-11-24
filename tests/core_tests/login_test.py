@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.django_db
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_login(client):
     """Тест на проверку входа (login)  пользователя"""
     user_data = {

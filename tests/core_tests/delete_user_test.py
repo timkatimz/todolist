@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.django_db
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_delete_user(client):
     """Тест на проверку удаления пользователя"""
     user_data = {

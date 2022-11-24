@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.django_db
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_unauthorized_user_cat(client, create_category):
     """Тест просмотр, редактирование и удаления категории неавторизованным пользователем"""
     client.logout()

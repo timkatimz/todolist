@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.django_db
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_board_delete(client, create_login_user):
     """Тест на проверку удаления доски"""
     board_create = client.post(

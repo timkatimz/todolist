@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.django_db
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_unauthorized_user_comment(client, create_goal):
     """Тест просмотр, редактирование и удаления комментария неавторизованным пользователем"""
     create_comment = client.post('/goals/goal_comment/create',

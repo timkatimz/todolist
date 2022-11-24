@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.django_db
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_delete_goal(client, create_category):
     """Тест на проверку удаления цели"""
     create_goal = client.post('/goals/goal/create',

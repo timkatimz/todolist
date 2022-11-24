@@ -4,7 +4,7 @@ from core.models import User
 
 
 @pytest.mark.django_db
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_sign_up(client):
     """Тест на проверку регистрации пользователя"""
     user_data = {

@@ -2,11 +2,9 @@ from datetime import datetime
 
 import pytest
 
-from goals.serializers import BoardSerializer
-
 
 @pytest.mark.django_db
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_board_create(client, create_login_user):
     """Тест на создание доски"""
     board_create = client.post(

@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.django_db
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_list_category(client, create_login_user):
     """Тест на проверку отображения списка категорий"""
     board_create = client.post(

@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.django_db
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_unauthorized_user_board(client, create_board):
     """Тест просмотр, редактирование и удаления доски неавторизованным пользователем"""
     client.logout()
