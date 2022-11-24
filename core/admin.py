@@ -1,7 +1,9 @@
 from django.contrib import admin
 from core.models import User
 
+
 class UserAdmin(admin.ModelAdmin):
+    """Класс модели для корректного отображения полей пользователя в админ панели"""
     list_display = ('last_name', 'first_name', 'username', 'email')
     list_display_links = ('last_name', 'first_name', 'username', 'email')
     search_fields = ('last_name', 'first_name', 'username', 'email')

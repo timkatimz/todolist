@@ -1,10 +1,9 @@
 from django.db import models
-
-
 from core.models import User
 
 
 class BaseModel(models.Model):
+    """Базовая модель от которой наследуются остальные модели"""
     created = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
     updated = models.DateTimeField(verbose_name="Дата последнего обновления", auto_now=True)
 
@@ -13,17 +12,21 @@ class BaseModel(models.Model):
 
 
 class Board(BaseModel):
+    """Класс модели доски целей"""
     title = models.CharField(verbose_name="Название", max_length=255)
     is_deleted = models.BooleanField(verbose_name="Удалена", default=False)
 
     class Meta:
+        """Мета-класс для корректного отображение названия модели в админ панели"""
         verbose_name = "Доска"
         verbose_name_plural = "Доски"
 
 
 class BoardParticipant(BaseModel):
+    """Класс модели добавленных участников доски целей"""
 
     class Role(models.IntegerChoices):
+        """Роли добавленных участников доски целей"""
         owner = 1, "Владелец"
         writer = 2, "Редактор"
         reader = 3, "Читатель"
@@ -33,13 +36,16 @@ class BoardParticipant(BaseModel):
     role = models.PositiveSmallIntegerField(verbose_name="Роль", choices=Role.choices, default=Role.owner)
 
     class Meta:
+        """Мета-класс для корректного отображение названия модели в админ панели"""
         unique_together = ("board", "user")
         verbose_name = "Участник"
         verbose_name_plural = "Участники"
 
 
 class GoalCategory(BaseModel):
+    """Класс модели категорий целей"""
     class Meta:
+        """Мета-класс для корректного отображение названия модели в админ панели"""
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
 
@@ -53,17 +59,21 @@ class GoalCategory(BaseModel):
 
 
 class Goal(BaseModel):
+    """Класс модели целей"""
     class Meta:
+        """Мета-класс для корректного отображение названия модели в админ панели"""
         verbose_name = "Цель"
         verbose_name_plural = "Цели"
 
     class Status(models.IntegerChoices):
+        """Класс модели для выбора статуса цели"""
         to_do = 1, "К выполнению"
         in_progress = 2, "В процессе"
         done = 3, "Выполнено"
         archived = 4, "Архив"
 
     class Priority(models.IntegerChoices):
+        """Класс модели для выбора приоритета цели"""
         low = 1, "Низкий"
         medium = 2, "Средний"
         high = 3, "Высокий"
@@ -87,7 +97,7 @@ class Goal(BaseModel):
         choices=Priority.choices,
         default=Priority.medium
     )
-    due_date = models.DateTimeField(verbose_name="Дата выполнеия", null=True, blank=True)
+    due_date = models.DateTimeField(verbose_name="Дата выполнения", null=True, blank=True)
     user = models.ForeignKey(User,
                              on_delete=models.PROTECT,
                              related_name="goals",
@@ -98,11 +108,13 @@ class Goal(BaseModel):
 
 
 class GoalComment(BaseModel):
+    """Класс модели комментариев цели"""
     user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name="Автор", related_name="comments",)
     goal = models.ForeignKey(Goal, on_delete=models.CASCADE,  verbose_name="Цель", related_name='comments')
     text = models.TextField(verbose_name="Текст")
 
     class Meta:
+        """Мета-класс для корректного отображение названия модели в админ панели"""
         verbose_name = "Комментарий"
         verbose_name_plural = "Комментарии"
 

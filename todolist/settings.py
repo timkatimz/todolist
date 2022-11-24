@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'environ',
     'core',
     'goals',
+    'bot',
 
 ]
 
@@ -121,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Samara'
 
 USE_I18N = True
 
@@ -158,8 +159,11 @@ SOCIAL_AUTH_USER_MODEL = 'core.User'
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_PAGINATION_CLASS': (
+        'rest_framework.pagination.LimitOffsetPagination',),
     'DEFAULT_FILTER_BACKEND': (
         'django_filters.rest_framework.DjangoFilterBackend',
     )
 }
+
+BOT_TOKEN = env('BOT_TOKEN')
